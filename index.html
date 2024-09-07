@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Application</title>
+    <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+    <div id="quiz-container">
+        <h1>Yavuzlar Soru Uygulaması Yönetim Paneli</h1>
+        <button id="list-questions-btn">Soruları Listele</button>
+        <button id="search-questions-btn">Soru Ara</button>
+        <button id="add-question-btn">Soru Ekle</button>
+        <div id="questions-list"></div>
+        <div id="question-container">
+            <p id="question"></p>
+            <div id="answer-buttons" class="btn-container">
+            <!--Cevap Butonu-->
+            </div>
+        </div>
+        <button id="next-btn">Soruyu Geç</button>
+    </div>
+
+    <!--Soru Ekleme Formu-->
+    <div id="add-question-form" class="hide">
+        <h2>Soru Ekle</h2>
+        <input type="text" id="new-question-text" placeholder="Soru Metni">
+        <input type="text" id="new-question-difficulty" placeholder="Zorluk Derecesi">
+        <button id="save-question-btn"></button>
+    </div>
+    
+    <script src="./script.js">Kaydet</script>
+</body>
+</html>
