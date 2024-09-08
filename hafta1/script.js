@@ -31,21 +31,22 @@ const questions = [
     },
 ];
 
+const startQuizButton = document.getElementById('start-quiz-btn');
 const questionElement = document.getElementById('question');
 const answerButtonsElement = document.getElementById('answer-buttons');
 const nextButton = document.getElementById('next-btn');
 const listQuestionsButton = document.getElementById('list-questions-btn');
-const searchQuestionsButton = document.getElementById('search-questions-btn');
-const addQuestionButton = document.getElementById('add-question-btn');
 const questionsListElement = document.getElementById('questions-list');
-const addQuestionForm = document.getElementById('add-question-form');
-const saveQuestionButton = document.getElementById('save-question-btn');
-const newQuestionText = document.getElementById('new-question-text');
-const newQuestionDifficulty = document.getElementById('new-question-difficulty');
 
 let currentQuestionIndex = 0;
 let score = 0;
 
+/**
+ * Düzenleme yapılacak...
+ */
+window.onload = () => {
+    nextButton.classList.add('hide');
+};
 function startQuiz() {
     currentQuestionIndex = 0;
     score = 0;
@@ -54,6 +55,9 @@ function startQuiz() {
     showQuestion(questions[currentQuestionIndex]);
 }
 
+/**
+ * Düzenleme yapılacak...
+ */
 function showQuestion(question) {
     questionElement.innerText = question.question;
     answerButtonsElement.innerHTML = '';
@@ -78,6 +82,16 @@ function selectAnswer(e) {
     } else {
         alert("Yanlış!");
     }
+
+    Array.from(answerButtonsElement.children).forEach(button => {
+        button.disabled = true;
+        if(button.dataset.correct) {
+            button.classList.add('Doğru!');
+        } else {
+            button.classList.add('Yanlış!');
+        }
+    });
+
     if (questions.length > currentQuestionIndex + 1) {
         nextButton.classList.remove('hide');
     } else {
@@ -88,69 +102,38 @@ function selectAnswer(e) {
 
 function listQuestions() {
     questionsListElement.innerHTML = '';
-    questions.forEach((question, index) => {
+
+    questions.forEach((question, index) => { 
         const questionItem = document.createElement('div');
         questionItem.innerHTML = `
             <p>${index + 1}. ${question.question} (Zorluk: ${question.difficulty})</p>
             <ul>
-                ${question.answers.map(answer => `<li>${answer.text} ${answer.correct ? '(Doğru)' : ''}</li>`).join('')}
+                ${question.answers.map((answer) => 
+                    `<li>${answer.text} ${answer.correct ? '(Doğru)' : ''}</li>`
+                ).join('')}
             </ul>
             <button onclick="editQuestion(${index})">Düzenle</button>
             <button onclick="deleteQuestion(${index})">Sil</button>
         `;
+
         questionsListElement.appendChild(questionItem);
     });
 }
-
-function searchQuestions(query) {
-    questionsListElement.innerHTML = '';
-    const filteredQuestions = questions.filter(q => q.question.toLowerCase().includes(query.toLowerCase()));
-    filteredQuestions.forEach((question, index) => {
-        const questionItem = document.createElement('div');
-        questionItem.innerHTML = `
-            <p>${index + 1}. ${question.question} (Zorluk: ${question.difficulty})</p>
-            <ul>
-                ${question.answers.map(answer => `<li>${answer.text} ${answer.correct ? '(Doğru)' : ''}</li>`).join('')}
-            </ul>
-            <button onclick="editQuestion(${index})">Düzenle</button>
-            <button onclick="deleteQuestion(${index})">Sil</button>
-        `;
-        questionsListElement.appendChild(questionItem);
-    });
-}
-
-function addQuestion() {
-    addQuestionForm.classList.remove('hide');
-}
-
-function saveQuestion() {
-    const questionText = newQuestionText.value;
-    const questionDifficulty = newQuestionDifficulty.value;
-    const answers = [
-        { text: document.getElementById('answer1').value, correct: document.getElementById('correct1').checked },
-        { text: document.getElementById('answer2').value, correct: document.getElementById('correct2').checked },
-        { text: document.getElementById('answer3').value, correct: document.getElementById('correct3').checked },
-        { text: document.getElementById('answer4').value, correct: document.getElementById('correct4').checked }
-    ];
-    
-    if (questionText && questionDifficulty && answers.some(answer => answer.text)) {
-        questions.push({
-            question: questionText,
-            difficulty: questionDifficulty,
-            answers: answers
-        });
-        newQuestionText.value = '';
-        newQuestionDifficulty.value = '';
-        addQuestionForm.classList.add('hide');
-        listQuestions();
-    } else {
-        alert("Lütfen tüm alanları doldurun.");
-    }
-}
-
 
 function editQuestion(index) {
-    alert(`Soru ${index + 1} düzenleniyor...`);
+    const question = questions[index];
+    const newQuestion = prompt('Yeni soru girin:',question.question);
+    const newDifficulty = prompt('Yeni zorluk seviyesi girin:', question.difficulty);
+
+    question.answers.forEach((answer, index) => {
+        const newAnswerText = prompt(`Yeni cevap girin (${answer.text}):`, answer.text);
+        const isCorrect = confirm(`Doğru mu? (${answer.text})`);
+    });
+
+    answer.text = newAnswerText;
+    answer.correct = isCorrect;
+
+    listQuestions();
 }
 
 function deleteQuestion(index) {
@@ -158,14 +141,15 @@ function deleteQuestion(index) {
     listQuestions();
 }
 
+startQuizButton.addEventListener('click', startQuiz);
 listQuestionsButton.addEventListener('click', listQuestions);
-searchQuestionsButton.addEventListener('click', searchQuestions);
-addQuestionButton.addEventListener('click', addQuestion);
-saveQuestionButton.addEventListener('click', saveQuestion);
 
 nextButton.addEventListener('click', () => {
     currentQuestionIndex++;
-    showQuestion(questions[currentQuestionIndex]);
+    if(currentQuestionIndex < questions.length) {
+        showQuestion(questions[currentQuestionIndex]);
+        nextButton.classList.add('hide');
+    } else {
+        startQuiz();
+    }
 });
-
-startQuiz();
