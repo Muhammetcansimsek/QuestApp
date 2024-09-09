@@ -3,19 +3,19 @@ const questions = [
         question: "Fransa'nın başkenti neredir?",
         difficulty: "easy",
         answers: [
-            { text: "Berlin", correct: false },
-            { text: "Madrid", correct: false },
+            { text: "Lyon", correct: false },
+            { text: "Nice", correct: false },
             { text: "Paris", correct: true },
-            { text: "Lisbon", correct: false }
+            { text: "Bordeaux", correct: false }
         ]
     },
     {
         question: "İngiltere'nin başkenti neredir?",
         difficulty: "easy",
         answers: [
-            { text: "İspanya", correct: false },
-            { text: "Ankara", correct: false },
-            { text: "Dortmunt", correct: false },
+            { text: "Manchester", correct: false },
+            { text: "Liverpool", correct: false },
+            { text: "Newcastle upon Tyne", correct: false },
             { text: "Londra", correct: true }
         ]
     },
@@ -126,7 +126,7 @@ function editQuestion(index) {
     };
 
     questions[index] = editedQuestion;
-    
+
     listQuestions();
 }
 
