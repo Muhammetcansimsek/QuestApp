@@ -41,23 +41,18 @@ const questionsListElement = document.getElementById('questions-list');
 let currentQuestionIndex = 0;
 let score = 0;
 
-/**
- * Düzenleme yapılacak...
- */
 window.onload = () => {
     nextButton.classList.add('hide');
 };
+
 function startQuiz() {
     currentQuestionIndex = 0;
     score = 0;
-    nextButton.classList.add('hide');
     questionsListElement.innerHTML = '';
+    nextButton.innerHTML = 'Sonraki Soru';
     showQuestion(questions[currentQuestionIndex]);
 }
 
-/**
- * Düzenleme yapılacak...
- */
 function showQuestion(question) {
     questionElement.innerText = question.question;
     answerButtonsElement.innerHTML = '';
@@ -75,40 +70,33 @@ function showQuestion(question) {
 
 function selectAnswer(e) {
     const selectedButton = e.target;
-    const correct = selectedButton.dataset.correct;
-    if (correct) {
+    const isCorrect = selectedButton.dataset.correct === "true";
+    if (isCorrect) {
         score++;
-        alert("Doğru! Puanınız: " + score);
+        selectedButton.classList.add('correct');
     } else {
-        alert("Yanlış!");
+        selectedButton.classList.add('incorrect');
     }
 
     Array.from(answerButtonsElement.children).forEach(button => {
-        button.disabled = true;
-        if(button.dataset.correct) {
-            button.classList.add('Doğru!');
-        } else {
-            button.classList.add('Yanlış!');
+        if (button.dataset.correct === "true") {
+            button.classList.add('correct');
         }
+        button.disabled = true;
     });
 
-    if (questions.length > currentQuestionIndex + 1) {
-        nextButton.classList.remove('hide');
-    } else {
-        nextButton.innerText = 'Yeniden Başlat';
-        nextButton.classList.remove('hide');
-    }
+    nextButton.classList.remove('hide');
 }
 
 function listQuestions() {
     questionsListElement.innerHTML = '';
 
-    questions.forEach((question, index) => { 
+    questions.forEach((question, index) => {
         const questionItem = document.createElement('div');
         questionItem.innerHTML = `
             <p>${index + 1}. ${question.question} (Zorluk: ${question.difficulty})</p>
             <ul>
-                ${question.answers.map((answer) => 
+                ${question.answers.map((answer) =>
                     `<li>${answer.text} ${answer.correct ? '(Doğru)' : ''}</li>`
                 ).join('')}
             </ul>
@@ -122,17 +110,23 @@ function listQuestions() {
 
 function editQuestion(index) {
     const question = questions[index];
-    const newQuestion = prompt('Yeni soru girin:',question.question);
-    const newDifficulty = prompt('Yeni zorluk seviyesi girin:', question.difficulty);
+    const newQuestion = prompt('Soru', question.question);
+    const newDifficulty = prompt('Zorluk', question.difficulty);
 
-    question.answers.forEach((answer, index) => {
-        const newAnswerText = prompt(`Yeni cevap girin (${answer.text}):`, answer.text);
+    const newAnswers = question.answers.map((answer) => {
+        const newAnswerText = prompt('Cevap', answer.text);
         const isCorrect = confirm(`Doğru mu? (${answer.text})`);
+        return { text: newAnswerText, correct: isCorrect };
     });
 
-    answer.text = newAnswerText;
-    answer.correct = isCorrect;
+    const editedQuestion = {
+        question: newQuestion,
+        difficulty: newDifficulty,
+        answers: newAnswers,
+    };
 
+    questions[index] = editedQuestion;
+    
     listQuestions();
 }
 
@@ -141,15 +135,38 @@ function deleteQuestion(index) {
     listQuestions();
 }
 
+function resetState() {
+    nextButton.classList.add('hide');
+    while (answerButtonsElement.firstChild) {
+        answerButtonsElement.removeChild(answerButtonsElement.firstChild);
+    }
+}
+
+function showResult() {
+    resetState();
+    questionElement.innerText = `Puan: ${score}`;
+    nextButton.innerHTML = 'Tekrar Başla';
+    nextButton.classList.remove('hide');
+}
+
+function handleNextButton() {
+    currentQuestionIndex++;
+    if (currentQuestionIndex < questions.length) {
+        showQuestion(questions[currentQuestionIndex]);
+    } else {
+        showResult();
+    }
+}
+
 startQuizButton.addEventListener('click', startQuiz);
 listQuestionsButton.addEventListener('click', listQuestions);
 
 nextButton.addEventListener('click', () => {
-    currentQuestionIndex++;
-    if(currentQuestionIndex < questions.length) {
-        showQuestion(questions[currentQuestionIndex]);
-        nextButton.classList.add('hide');
+    if (currentQuestionIndex < questions.length) {
+        handleNextButton();
     } else {
         startQuiz();
     }
 });
+
+
