@@ -37,6 +37,8 @@ const answerButtonsElement = document.getElementById('answer-buttons');
 const nextButton = document.getElementById('next-btn');
 const listQuestionsButton = document.getElementById('list-questions-btn');
 const questionsListElement = document.getElementById('questions-list');
+const searchButton = document.getElementById('search-btn');
+const searchInput = document.getElementById('search-input');
 
 let currentQuestionIndex = 0;
 let score = 0;
@@ -169,4 +171,34 @@ nextButton.addEventListener('click', () => {
     }
 });
 
+function filterQuestions(query) {
+    const filteredQuestions = questions.filter(question => 
+        question.question.toLowerCase().includes(query.toLowerCase())
+    );
+    displayQuestions(filteredQuestions);
+}
 
+function displayQuestions(filteredQuestions) {
+    questionsListElement.innerHTML = '';
+
+    filteredQuestions.forEach((question, index) => {
+        const questionItem = document.createElement('div');
+        questionItem.innerHTML = `
+            <p>${index + 1}. ${question.question} (Zorluk: ${question.difficulty})</p>
+            <ul>
+                ${question.answers.map((answer) =>
+                    `<li>${answer.text} ${answer.correct ? '(Doğru)' : ''}</li>`
+                ).join('')}
+            </ul>
+            <button onclick="editQuestion(${index})">Düzenle</button>
+            <button onclick="deleteQuestion(${index})">Sil</button>
+        `;
+
+        questionsListElement.appendChild(questionItem);
+    });
+}
+
+searchButton.addEventListener('click', () => {
+    const query = searchInput.value;
+    filterQuestions(query);
+});
