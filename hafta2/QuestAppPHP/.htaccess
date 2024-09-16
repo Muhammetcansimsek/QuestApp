@@ -1,2 +1,7 @@
 RewriteEngine On
 RewriteRule ^$ /quizzer/index.php [L]
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^quizzer/(.*)$ /$1 [L]
+RewriteCond %{REQUEST_URI} !^/fetch.php
+RewriteCond %{REQUEST_URI} !^/process.php
