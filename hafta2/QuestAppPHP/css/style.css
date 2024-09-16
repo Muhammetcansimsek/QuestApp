@@ -110,3 +110,16 @@ input[type='text'] {
     border-radius: 5px;
     border: 1px #ccc solid; 
 }
+
+.choices {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+.choices li {
+    margin: 10px;
+}
+
+button {
+    margin-top: 10px;
+}

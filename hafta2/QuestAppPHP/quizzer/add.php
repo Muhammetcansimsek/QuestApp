@@ -30,7 +30,7 @@
             </p>
             <p>
                 <label>Doğru Cevap: </label>
-                <input type="number" name="correct_choice">
+                <input type="number" name="correct_choice" min="1" max="4" required>
             </p>
             <p>
                 <input type="submit" name="submit" value="Soruyu Ekle">

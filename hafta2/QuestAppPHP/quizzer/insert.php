@@ -1,6 +1,5 @@
 <?php
 include 'db.php';
-
 if($_SERVER['REQUEST_METHOD'] == 'POST') {
     $question_number = $_POST['question_number'];
     $question_text = $_POST['question_text'];
@@ -16,12 +15,15 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     $sql = "INSERT INTO questions (question, answers, correct_answer) VALUES (:question, :answers, :correct_answer)";
     $stmt = $pdo->prepare($sql);
-    $stmt->execute(['question' => $question_text, 'answers' => $answers, 'correct_answer' => $correct_choice]);
+    $stmt->execute([
+        'question' => $question_text,
+        'answers' => $answers,
+        'correct_answer' => $correct_choice
+    ]);
 
     echo "Soru başarıyla eklendi!";
 } else {
     echo "Bu sayfaya sadece POST metoduyla erişilebilir!";
 }
-
 
 ?>
