@@ -21,18 +21,19 @@ if(!$question) {
 
 $answers = json_decode($question['answers'], true);
  
-?>
+?>  
 
 <main>
     <div class="container">
         <h2><?php echo $question['question']; ?></h2>
         <?php if (is_array($answers) && !empty($answers)) : ?>
-            <form method="post" action="process.php?n=<?php echo $question_number; ?>">
+            <form id="quizForm" method="post" action="process.php?n=<?php echo $question_number; ?>">
                 <ul class="choices">
                     <?php foreach ($answers as $i => $answer) : ?>
-                        <li><input type="radio" name="choice" value="<?php echo $i + 1; ?>" /><?php echo $answer; ?></li>
+                        <li data-choice="<?php echo $i + 1; ?>"><?php echo $answer; ?></li>
                     <?php endforeach; ?>
                 </ul>
+                <input type="hidden" name="choice" id="selectedChoice" />
                 <input type="hidden" name="question_id" value="<?php echo $question['id']; ?>" />
                 <button type="submit">Soruyu İşaretle</button>
             </form>
@@ -41,5 +42,19 @@ $answers = json_decode($question['answers'], true);
         <?php endif; ?>
     </div>
 </main>
+
+<script>
+    document.querySelectorAll('.choices li').forEach(function(choice) {
+        choice.addEventListener('click', function() {
+            document.querySelectorAll('.choices li').forEach(function(c) {
+                c.classList.remove('selected');
+            });
+            this.classList.add('selected');
+            document.getElementById('selectedChoice').value = this.getAttribute('data-choice');
+            document.querySelector('button[type="submit"]').removeAttribute('disabled');
+        });
+        
+    });
+</script>
 
 <?php include '../layout/footer.php'; ?>

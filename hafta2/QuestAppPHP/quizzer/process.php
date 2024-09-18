@@ -27,13 +27,13 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
     $correct_index = (int) $question['correct_answer'];
 
     if($user_choice == $correct_index) {
-        echo "<h3 style='color:green;'>Doğru!</h3>";
+        echo "<h3 style='color:green;' class='correct-answer'>Doğru!</h3>";
         $_SESSION['score'] = ($_SESSION['score'] ?? 0) + 1;
     } else {
-        echo "<h3 style='color:red;'>Yanlış! Doğru cevap: " . $answers[$correct_index - 1] . "</h3>";
+        echo "<h3 style='color:red;' class='wrong-answer'>Yanlış! Doğru cevap: " . $answers[$correct_index - 1] . "</h3>";
     }
 
-    echo "<ul class='   '>";
+    echo "<ul class='choices'>";
     foreach($answers as $index => $answer) {
         if (($index + 1) == $correct_index) {
             echo "<li style='color:green;'>" . $answer . " (Doğru)</li>";
@@ -44,13 +44,23 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
     }
     echo "</ul>";
+
+    $next_question = $question_id + 1;
+    echo "<a class='start'   href='fetch.php?n=" . $next_question . "'>Sonraki Soru</a>";
 } else {
     echo "<h3 style='color:red;'>Bu sayfaya doğrudan erişim sağlayamazsınız!</h3>";
     exit();
 }
-
-$next_question = $question_id + 1;
-echo "<a class='start'   href='fetch.php?n=" . $next_question . "'>Sonraki Soru</a>";
-
 include '../layout/footer.php';
 ?>
+
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.4.0/dist/confetti.browser.min.js"></script>
+<script>
+    <?php if($user_choice == $correct_index) : ?>
+        confetti({
+            particleCount: 100,
+            spread: 70,
+            origin: { y: 0.6 }
+        });
+    <?php endif; ?>
+</script>
