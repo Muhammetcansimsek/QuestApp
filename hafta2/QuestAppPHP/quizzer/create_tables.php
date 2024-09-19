@@ -1,13 +1,12 @@
 <?php
-
-include 'db.php';
+include './db.php';
 
 $userTable = "
 CREATE TABLE IF NOT EXISTS users (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     username TEXT NOT NULL,
     password TEXT NOT NULL,
-    role TEXT CHECK(role IN ('admin', 'user')) NOT NULL
+    role TEXT CHECK(role IN ('admin', 'student')) NOT NULL
 )";
 
 $pdo->exec($userTable);

@@ -1,6 +1,6 @@
 <?php
-session_start();
 include '../layout/header.php'; 
+session_start();
 ?>
 <main>
     <div class="container">

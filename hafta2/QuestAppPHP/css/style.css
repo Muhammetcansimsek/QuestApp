@@ -185,3 +185,74 @@ p {
     animation: wrong-animation 1s ease-in-out;
     text-align: center;
 }
+
+form {
+    background-color: rgba(255, 255, 255, 0.9);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    margin: 20px auto;
+    max-width: 400px;
+    text-align: left;
+}
+
+form label {
+    font-size: 1.2em;
+    margin-bottom: 10px;
+    display: block;
+    color: #333;
+}
+
+form input[type='text'], input[type='password'] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 1em;
+    box-sizing: border-box;
+    background-color: rgba(245, 245, 245, 0.9);
+    transition: border 0.3s ease;
+}
+
+form input[type='text']:focus, input[type='password']:focus {
+    border: 1px solid #4CAF50;
+    outline: none;
+}
+
+form button {
+    background-color: #4ACF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 12px 20px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    font-size: 1em;
+    width: 100%;
+}
+
+form button:hover {
+    background-color: #45a049;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.success-message {
+    color: green;
+    text-align: center;
+    margin-top: 20px;
+    animation: correct-animation 1s ease-in-out;
+}
+
+.error-message {
+    color: red;
+    text-align: center;
+    margin-top: 20px;
+    animation: wrong-animation 1s ease-in-out;
+
+}

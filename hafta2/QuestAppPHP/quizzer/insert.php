@@ -1,5 +1,5 @@
 <?php
-include 'db.php';
+include './db.php';
 if($_SERVER['REQUEST_METHOD'] == 'POST') {
     $question_number = $_POST['question_number'];
     $question_text = $_POST['question_text'];
@@ -21,7 +21,8 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
         'correct_answer' => $correct_choice
     ]);
 
-    echo "Soru başarıyla eklendi!";
+    echo "<div class='success-message'>Soru başarıyla eklendi!</div>";
+    header('Refresh: 2; URL=add.php');
 } else {
     echo "Bu sayfaya sadece POST metoduyla erişilebilir!";
 }
