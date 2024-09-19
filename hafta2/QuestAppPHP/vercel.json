@@ -1,24 +1,20 @@
 {
-    "version": 2,
-    "builds": [
-      { "src": "quizzer/*.php", "use": "@vercel/php" }
-    ],
-    "routes": [
-      {
-        "src": "^/$", 
-        "dest": "/quizzer/index.php"
-      },
-      {
-        "src": "^/quizzer/(.*)$",
-        "has": [
-          { "type": "file", "src": "/$1" }
-        ],
-        "dest": "/$1"
-      },
-      {
-        "src": "^(?!/fetch.php)(?!/process.php).*$",
-        "dest": "/$1"
-      }
-    ]
-  }
-  
+  "version": 2,
+  "builds": [
+    { "src": "quizzer/*.php", "use": "@vercel/php" }
+  ],
+  "routes": [
+    {
+      "src": "^/$",
+      "dest": "/quizzer/index.php"
+    },
+    {
+      "src": "^/quizzer/(.*)$",
+      "dest": "/quizzer/$1"
+    },
+    {
+      "src": "^(?!/fetch.php)(?!/process.php)(.*)$",
+      "dest": "/$1"
+    }
+  ]
+}
